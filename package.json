@@ -1,0 +1,11 @@
+{
+  "name": "rrhh-soa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pr\u00e1ctica SOA de Recursos Humanos con Docker Compose",
+  "scripts": {
+    "docker:build": "docker compose build",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down"
+  }
+}
