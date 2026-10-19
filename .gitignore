@@ -1,0 +1,34 @@
+# Dependencias de Node.js (gateway y servicios)
+node_modules/
+
+# Variables de entorno locales
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Logs y archivos temporales
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.pid
+*.pid.lock
+*.tmp
+*.swp
+*~
+
+# Cobertura y salidas generadas
+coverage/
+.nyc_output/
+dist/
+build/
+.cache/
+
+# Archivos del sistema
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
