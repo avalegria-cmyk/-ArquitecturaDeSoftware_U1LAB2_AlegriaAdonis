@@ -1,33 +1,40 @@
-# RRHH SOA
+# RRHH SOA · Órbita
 
-## Entorno Docker
+Aplicación de recursos humanos con API Gateway y servicios de empleados, nómina y reclutamiento. Incluye una interfaz web responsive en español, sin dependencias de frontend ni recursos externos.
 
-La práctica usa Node.js 22 (cumple el requisito de Node.js 18 o superior), dos bases PostgreSQL 15 y MongoDB 7. Docker instala las dependencias dentro de cada imagen; no hace falta instalar Node.js ni las bases de datos en el equipo.
+## Iniciar
 
-- Gateway: Express, Axios, dotenv, JWT, express-rate-limit, Winston y http-proxy-middleware.
-- Empleados y nómina: dependencias comunes más Sequelize, pg y pg-hstore.
-- Reclutamiento: dependencias comunes más Mongoose.
+Con Docker Desktop en ejecución, desde esta carpeta:
 
-Desde esta carpeta, validar y construir las imágenes:
-
-```sh
-docker compose config --quiet
-docker compose build
+```bash
+docker compose up -d --build
 ```
 
-Estado actual: estructura y dependencias. Todavía falta implementar `src/index.js` en el gateway y en cada servicio. `docker compose up` podrá arrancar las aplicaciones cuando existan esos archivos.
+Abre **http://localhost:3000**. Acceso de laboratorio: usuario `admin` o `rrhh`, contraseña `1234`.
 
-Para iniciar solo las bases de datos:
+La interfaz permite:
 
-```sh
-docker compose up -d postgres_emp postgres_nom mongo
+- Consultar el resumen del equipo, departamentos, vacantes abiertas y candidaturas.
+- Buscar, registrar y editar empleados, incluido su estado activo/inactivo.
+- Calcular y guardar nóminas, y consultar el historial por empleado.
+- Crear y editar vacantes; registrar candidatos y actualizar su etapa y notas.
+
+La sesión se conserva en la pestaña mediante `sessionStorage`. Las operaciones utilizan los endpoints existentes del Gateway con autenticación JWT. Los datos mostrados provienen de los servicios; no se insertan registros de demostración.
+
+## Desarrollo de la interfaz
+
+Archivos: `gateway/public/index.html`, `styles.css` y `app.js`. Express sirve estos recursos desde el Gateway. Después de modificar la interfaz:
+
+```bash
+docker compose up -d --build --no-deps gateway
 ```
 
-Una vez implementadas las aplicaciones:
+Servicios: Gateway (3000), empleados (3001, PostgreSQL), nómina (3002, PostgreSQL) y reclutamiento (3003, MongoDB). Comprueba el estado con `docker compose ps` y los registros con `docker compose logs gateway`.
 
-```sh
-docker compose up --build
+Para detener sin eliminar los datos:
+
+```bash
 docker compose down
 ```
 
-El gateway publica el puerto 3000. Los servicios y las bases se comunican dentro de la red de Docker mediante sus nombres. Los datos se conservan en volúmenes. Las credenciales incluidas son exclusivamente para esta práctica local; JWT_SECRET se puede definir en el entorno o en un archivo .env de la raíz.
+Los volúmenes conservan las bases de datos. Las credenciales y secretos incluidos corresponden al laboratorio.

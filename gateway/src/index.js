@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 const rateLimit = require('express-rate-limit');
 const winston   = require('winston');
@@ -7,6 +8,9 @@ const auth      = require('./middlewares/auth');
 
 const app = express();
 app.use(express.json());
+
+// Interfaz web servida desde el mismo origen que la API.
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Logger centralizado
 const logger = winston.createLogger({
